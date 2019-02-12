@@ -5,14 +5,17 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Controller2D : MonoBehaviour
 {
-
+    //Giving the sprite a small later so it doesnt phase through the ground. 
     public LayerMask collisionMask;
     const float skinWidth = .015f;
+    //Fires off <amount of rays> to pinpoint the position of the sprite
     public int horizontalRayCount = 4;
     public int verticalRayCount = 4;
 
+    //This sets the climb angle of which the sprite cannot climb anymore as well as the descending to the point it allows the sprite to basically fall
+    //<need to add it to where the sprite slides>
     float maxClimbAngle = 80;
-    float maxDecendAngle = 75;
+    float maxDescendAngle = 75;
 
     float horizontalRaySpacing;
     float verticalRaySpacing;
@@ -53,10 +56,12 @@ public class Controller2D : MonoBehaviour
     }
     void HorizontalCollisions(ref Vector3 velocity)
     {
+        //Direction its pointing
         float directionX = Mathf.Sign(velocity.x);
+        //Detects how far away objects are
         float rayLength = Mathf.Abs(velocity.x) + skinWidth;
 
-
+        //Need to optimise before release as could be problamtic since for loop. Probably for when a ray is hit then do what is needed. Look into BoxRays
         for (int i = 0; i < horizontalRayCount; i++)
         {
             Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
@@ -64,6 +69,7 @@ public class Controller2D : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
             Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
 
+            //If any rays are hit it'll look for any of the true statements
             if (hit)
             {
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
@@ -71,6 +77,7 @@ public class Controller2D : MonoBehaviour
                 {
                     if (collisions.descendingSlope)
                     {
+                        //This allows it to move slowly down slopes
                         collisions.descendingSlope = false;
                         velocity = collisions.velocityOld;
                     }
@@ -102,6 +109,7 @@ public class Controller2D : MonoBehaviour
         }
     }
 
+    //same as HorizontalCollisions but this time Vertical 
     void VerticalCollisions(ref Vector3 velocity)
     {
         float directionY = Mathf.Sign(velocity.y);
@@ -171,7 +179,7 @@ public class Controller2D : MonoBehaviour
         if (hit)
         {
             float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
-            if (slopeAngle != 0 && slopeAngle <= maxDecendAngle)
+            if (slopeAngle != 0 && slopeAngle <= maxDescendAngle)
             {
                 if (Mathf.Sign(hit.normal.x) == directionX)
                 {
