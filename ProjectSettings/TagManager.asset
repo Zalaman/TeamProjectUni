@@ -47,3 +47,12 @@ TagManager:
   - name: Player
     uniqueID: 2139623709
     locked: 0
+  - name: FarBackGround Forest
+    uniqueID: 2817852269
+    locked: 0
+  - name: Background Forest
+    uniqueID: 2775298897
+    locked: 0
+  - name: City
+    uniqueID: 1161890435
+    locked: 0
