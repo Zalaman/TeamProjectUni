@@ -16,6 +16,12 @@ public class Player : MonoBehaviour
     float moveSpeed = 6;
     float gravity;
 
+    public Vector2 wallJumpClimb;
+    public Vector2 wallJumpOff;
+    public Vector2 wallJumpLeap;
+    public float wallSlideSpeedMax = 3;
+
+
     float jumpVelocity;
     Vector3 velocity;
     float velocityXSmoothing;
@@ -24,7 +30,7 @@ public class Player : MonoBehaviour
 
     Controller2D controller;
 
-    private void Start()
+    void Start()
     {
         controller = GetComponent<Controller2D>();
 
@@ -34,17 +40,51 @@ public class Player : MonoBehaviour
         //This is for testing purposeses and should be deleted
         print("Gravity: " + gravity + "  Jump Velocity: " + jumpVelocity);
     }
-    private void Update()
+    void Update()
     {
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        int wallDirectionX = (controller.collisions.left) ? -1 : 1;
+
+        bool wallSliding = false;
+        if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0)
+        {
+            wallSliding = true;
+            if (velocity.y < -wallSlideSpeedMax)
+            {
+                velocity.y = -wallSlideSpeedMax;
+            }
+        }    
+
         //This section is the set up for collision detection for both horizontal and vertical axis
         if (controller.collisions.above || controller.collisions.below)
         {
             velocity.y = 0;
         }
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if(Input.GetKeyDown(KeyCode.Space)&& controller.collisions.below)
+        if(Input.GetKeyDown(KeyCode.Space))
         {
-            velocity.y = jumpVelocity;
+            if (wallSliding)
+            {
+                if (wallDirectionX == input.x)
+                {
+                    velocity.x = -wallDirectionX * wallJumpClimb.x;
+                    velocity.y = wallJumpClimb.y;
+                }
+                else if (input.x == 0)
+                {
+                    velocity.x = -wallDirectionX* wallJumpOff.x;
+                    velocity.y = wallJumpOff.y;
+                }
+                else
+                {
+                    velocity.x = -wallDirectionX * wallJumpLeap.x;
+                    velocity.y = wallJumpLeap.y;
+                }
+            }
+            if (controller.collisions.below)
+            {
+                velocity.y = jumpVelocity;
+            }
         }
 
         //float t is used for readability 

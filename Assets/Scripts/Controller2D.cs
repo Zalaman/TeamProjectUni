@@ -19,6 +19,7 @@ public class Controller2D : RaycastController
     public override void Start()
     {
         base.Start();
+        collisions.directionFacing = 1;
     }
    
 
@@ -28,14 +29,18 @@ public class Controller2D : RaycastController
         collisions.Reset();
         collisions.velocityOld = velocity;
 
+        if (velocity.x != 0)
+        {
+            collisions.directionFacing = (int)Mathf.Sign(velocity.x);
+        }
+
         if (velocity.y < 0)
         {
             DescendSlope(ref velocity);
         }
-        if (velocity.x != 0)
-        {
-            HorizontalCollisions(ref velocity);
-        }
+           
+        HorizontalCollisions(ref velocity);
+        
         if (velocity.y != 0)
         {
             VerticalCollisions(ref velocity);
@@ -52,9 +57,14 @@ public class Controller2D : RaycastController
     void HorizontalCollisions(ref Vector3 velocity)
     {
         //Direction its pointing
-        float directionX = Mathf.Sign(velocity.x);
+        float directionX = collisions.directionFacing;
         //Detects how far away objects are
         float rayLength = Mathf.Abs(velocity.x) + skinWidth;
+
+        if (Mathf.Abs(velocity.x) < skinWidth)
+        {
+            rayLength = 2 * skinWidth;
+        }
 
         //Need to optimise before release as could be problamtic since for loop. Probably for when a ray is hit then do what is needed. Look into BoxRays
         for (int i = 0; i < horizontalRayCount; i++)
@@ -209,6 +219,7 @@ public class Controller2D : RaycastController
         public bool descendingSlope;
         public float slopeAngle, slopeAngleOld;
         public Vector3 velocityOld;
+        public int directionFacing;
 
         public void Reset()
         {
