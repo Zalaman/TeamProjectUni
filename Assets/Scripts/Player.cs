@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
         {
             velocity.y = 0;
         }
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space)||Input.GetKeyDown(KeyCode.UpArrow)||Input.GetKeyDown(KeyCode.W))
         {
             if (wallSliding)
             {
