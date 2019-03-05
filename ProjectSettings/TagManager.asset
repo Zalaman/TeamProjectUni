@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Pushable
+  - Notification
   layers:
   - Default
   - TransparentFX
@@ -15,7 +17,7 @@ TagManager:
   - 
   - Player
   - Obstacle
-  - 
+  - scene
   - 
   - 
   - 
@@ -41,18 +43,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Ground
-    uniqueID: 297861333
-    locked: 0
-  - name: Player
-    uniqueID: 2139623709
-    locked: 0
   - name: FarBackGround Forest
     uniqueID: 2817852269
+    locked: 0
+  - name: MidBackGround
+    uniqueID: 2559915849
     locked: 0
   - name: Background Forest
     uniqueID: 2775298897
     locked: 0
+  - name: Ground
+    uniqueID: 297861333
+    locked: 0
   - name: City
     uniqueID: 1161890435
+    locked: 0
+  - name: Player
+    uniqueID: 2139623709
     locked: 0
