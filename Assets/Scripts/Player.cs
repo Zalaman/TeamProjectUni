@@ -20,11 +20,13 @@ public class Player : MonoBehaviour
     public Vector2 wallJumpOff;
     public Vector2 wallJumpLeap;
     public float wallSlideSpeedMax = 3;
+    public Animator animator;
 
 
     float jumpVelocity;
     Vector3 velocity;
     float velocityXSmoothing;
+    float horizontalMove;
 
 
 
@@ -40,9 +42,17 @@ public class Player : MonoBehaviour
         //This is for testing purposeses and should be deleted
         print("Gravity: " + gravity + "  Jump Velocity: " + jumpVelocity);
     }
+    public void OnLanding()
+    {
+        animator.SetBool("IsJumping", false);
+    }
     void Update()
     {
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        horizontalMove = Input.GetAxisRaw("Horizontal") * moveSpeed;
+
+        animator.SetFloat("MoveSpeed",horizontalMove);
+
 
         int wallDirectionX = (controller.collisions.left) ? -1 : 1;
 
@@ -63,6 +73,7 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.Space)||Input.GetKeyDown(KeyCode.UpArrow)||Input.GetKeyDown(KeyCode.W))
         {
+            animator.SetBool("IsJumping", true);
             if (wallSliding)
             {
                 if (wallDirectionX == input.x)
@@ -85,6 +96,12 @@ public class Player : MonoBehaviour
             {
                 velocity.y = jumpVelocity;
             }
+            
+        }
+        //Check if there is a collider below the player and that there is no fall/jump velocity
+        if (controller.collisions.below && velocity.y == 0)
+        {
+            OnLanding();
         }
 
         //float t is used for readability 
