@@ -61,3 +61,6 @@ TagManager:
   - name: Player
     uniqueID: 2139623709
     locked: 0
+  - name: Scene
+    uniqueID: 3141413371
+    locked: 0
