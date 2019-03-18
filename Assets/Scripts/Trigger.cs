@@ -7,12 +7,12 @@ public class Trigger : MonoBehaviour
 
     public Transform blockade;
     public Vector3 closedPosition = new Vector3(39.02f, 2.2f, 0);
-    public Vector3 openPosition = new Vector3(39.02f, 0, 0);
+    public Vector3 openPosition = new Vector3(-45f, -147, 0);
 
     public float openSpeed = 1;
 
     private bool open = false;
-
+    public GameObject door;
 
     // Start is called before the first frame update
     void Start()
@@ -37,10 +37,11 @@ public class Trigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Entered");
+       
         if(other.tag == "Pushable")
         {
-            OpenDoor();
+            Debug.Log("Entered");
+            Destroy(door);
         }
     }
     private void OnTriggerExit2D(Collider2D other)
