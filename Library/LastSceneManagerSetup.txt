@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Scenes/Sam.unity
-=======
 - path: Assets/Scenes/MasterScene.unity
->>>>>>> master
   isLoaded: 1
   isActive: 1
