@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Pushable
   - Notification
+  - PuzzlePiece
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Player
   - Obstacle
   - scene
-  - 
+  - PuzzlePiece
   - 
   - 
   - 
@@ -60,4 +61,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2139623709
+    locked: 0
+  - name: Scene
+    uniqueID: 3141413371
     locked: 0
